@@ -5,7 +5,8 @@ radius
 
 [idp:vars]
 ansible_user=ubuntu
+ansible_ssh_password=renu123
+ansible_password=renu123
 
 [<tld_institution>:children]
 idp
-
