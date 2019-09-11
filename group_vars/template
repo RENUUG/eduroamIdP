@@ -1,10 +1,9 @@
-realms: 
-  - example.tld
-  - example.net
+realms:
+  - example.ac.ug
 
 organisation: Example University
-city: Testville
-country_code: MW
+city: Kampala
+country_code: UG
 
 
 ### User Stores ###
@@ -13,7 +12,7 @@ country_code: MW
 ldap:
   enabled: False
   server: ldap.example.net
-  base_dn: ou=people,dc=example,dc=net
+  base_dn: ou=people,dc=example,dc=ac,dc=ug
   filter: "{% raw %}(uid=%{%{Stripped-User-Name}:-%{User-Name}}){% endraw %}"
   # How are user passwords saved in LDAP
   # user_password_type: Cleartext-Password
@@ -38,9 +37,17 @@ file:
 
 flrs:
   -
-    name: flr1.eduroam
-    shortname: flr1
-    ip4: 168.253.217.71
+    name: renu-flr-1
+    shortname: renu-flr-1
+    ip4: 196.43.185.12
+    ipv6_enabled: False
+    ip6:
+
+  # Second instance for Redundancy
+  -
+    name: renu-flr-2
+    shortname: renu-flr-2
+    ip4: 196.43.140.135
     ipv6_enabled: False
     ip6:
 
@@ -55,9 +62,9 @@ flrs:
 
 ### NRO Switchboard, eg. eduroam.ubuntunet.net ###
 
-switchboard:
-  name: Switchboard
-  ip4: 168.253.217.136
+#switchboard:
+#  name: Switchboard
+#  ip4: 168.253.217.136
 
 
 ### Additional Roles ###
