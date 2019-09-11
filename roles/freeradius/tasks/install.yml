@@ -3,11 +3,11 @@
     name: freeradius
     state: latest
 
-    #- name: Install LDAP module if enabled
-    #package: 
-    #name: freeradius-ldap
-    #state: latest
-    #when: ldap.enabled == True
+- name: Install LDAP module if enabled
+  package: 
+    name: freeradius-ldap
+    state: latest
+  when: ldap.enabled == True
 
 - name: Install libselinux-python and freeradius-utils on RedHat
   package: 
