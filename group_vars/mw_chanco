@@ -1,0 +1,70 @@
+realms: 
+  - chanco.ac.mw
+  - cc.ac.mw
+  - chanco.unima.mw
+
+organisation: Chancellor College
+city: Zomba
+country_code: MW
+
+
+### Backends ###
+
+# Static File
+file:
+  enabled: True
+  test_user_name: test
+
+
+# LDAP Backend
+ldap:
+  enabled: False
+  server: ldap.example.net
+  identity: "{{ ldap_identity_cc }}"
+  password: "{{ ldap_password_cc }}"
+  base_dn: ou=people,dc=cc,dc=ac,dc=mw
+  filter: "{% raw %}(uid=%{%{Stripped-User-Name}:-%{User-Name}}){% endraw %}"
+  # How are user passwords saved in LDAP
+  user_password_type: Cleartext-Password
+
+# SQL Backend (mysql or postgresql)
+sql:
+  enabled: False
+  type: postgresl
+  server: localhost
+  port: 5432
+  user: radius
+
+
+### Federation/National Level Roaming Operators ###
+
+flrs:
+  -
+    name: flr1.eduroam
+    shortname: flr1
+    ip4: 41.70.23.5
+    ipv6_enabled: False
+    ip6: 2002:2946:1802:b:ca1f:66ff:feb9:ce58
+    secret: "{{ flr_secret }}"
+
+  # Second instance for Redundancy
+  -
+    name: flra.eduroam
+    shortname: flra
+    ip4: 196.223.219.91
+    ipv6_enabled: False
+    ip6: 2002:2946:1802:b:ca1f:66ff:feb9:ce58
+    secret: "{{ flr_secret }}"
+
+
+### NRO Switchboard, eg. eduroam.ubuntunet.net ###
+
+switchboard:
+  name: Switchboard
+  ip4: 168.253.217.136
+
+
+### Additional Roles ###
+
+# Role for testing Radius IdP functionality
+play_eapol: False

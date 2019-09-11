@@ -1,0 +1,10 @@
+wingu ansible_host=196.223.219.90
+
+[idp]
+wingu
+
+[idp:vars]
+ansible_user=ubuntu
+
+[mw_ubuntunet:children]
+idp

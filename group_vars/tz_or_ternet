@@ -1,0 +1,73 @@
+realms: 
+  - ternet.or.tz
+
+organisation: TERNET - Tanzania Education & Research Network
+city: Dar es Salaam
+country_code: TZ
+
+### Backends ###
+
+# Static File
+file:
+  enabled: True
+  test_user_name: test
+
+
+# LDAP Backend
+ldap:
+  enabled: True
+  # server: ldap.ternet.or.tz
+  server: 192.168.148.31
+  identity: "{{ ldap_identity_ternet }}"
+  password: "{{ ldap_password_ternet }}"
+  base_dn: ou=people,dc=ternet,dc=or,dc=tz
+  filter: "{% raw %}(uid=%{%{Stripped-User-Name}:-%{User-Name}}){% endraw %}"
+  # How are user passwords saved in LDAP, used in ldap.attrmap
+  user_password_type: Cleartext-Password
+
+# SQL Backend (mysql or postgresql)
+sql:
+  enabled: False
+  type: postgresl
+  server: localhost
+  port: 5432
+  user: radius
+
+
+### Access Points are found in group_vars/clients.yml ###
+
+
+### Federation/National Level Roaming Operators ###
+
+flrs:
+  -
+    name: flr1.eduroam
+    shortname: flr1
+    # ip4: 41.93.32.29
+    ip4: 192.168.148.29
+    ipv6_enabled: False
+    ip6: 2002:2946:1802:b:ca1f:66ff:feb9:ce58
+    # Don't add shared_secret here, but in secrets.yml
+    secret: "{{ flr_secret }}"
+
+  # Second instance for Redundancy
+  # -
+  #   name: flra.eduroam
+  #   shortname: flra
+  #   ip4: 168.253.216.149
+  #   ipv6_enabled: False
+  #   ip6: 2002:2946:1802:b:ca1f:66ff:feb9:ce58
+  #   secret: "{{ tz_flr_secret }}"
+
+
+### NRO Switchboard, eg. eduroam.ubuntunet.net ###
+
+switchboard:
+  name: Switchboard
+  ip4: 168.253.217.136
+
+
+### Additional Roles ###
+
+# Role for testing Radius IdP functionality
+play_eapol: False

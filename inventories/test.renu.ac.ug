@@ -1,0 +1,11 @@
+radius ansible_host=196.43.159.204
+
+[idp]
+radius
+
+[idp:vars]
+ansible_user=ubuntu
+
+[<tld_institution>:children]
+idp
+

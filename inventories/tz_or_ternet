@@ -1,0 +1,12 @@
+#radius ansible_host=41.93.45.92
+radius ansible_host=41.93.32.30
+
+[idp:vars]
+#ansible_user=ubuntu
+ansible_user=chris
+
+[idp]
+radius
+
+[tz_or_ternet]
+radius

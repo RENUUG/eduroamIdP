@@ -1,0 +1,8 @@
+poly ansible_ssh_host=41.77.11.147 ansible_user=ubuntu
+#poly ansible_ssh_host=10.10.50.153 ansible_user=eduroam
+
+[idp]
+poly
+
+[mw_poly:children]
+idp

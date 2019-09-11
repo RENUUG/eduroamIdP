@@ -1,0 +1,86 @@
+#<!--Replace domain.tld for your own assigned realm as an IdP. For SPs, only the DEFAULT realm is important--!>
+#<!--proxy.conf contains a small configuration stanza; proxy server for system-wide options:--!>
+
+proxy server {
+        default_fallback        = yes
+}
+#<!-- This setting means that if an authentication request contains a realm that is not explicitly listed in later sections of this file, it is proxied to the DEFAULT realm.--!>
+
+
+#<!-- The configuration file also needs to have defined home_server entries. They are the counterpart to the client stanzas from above: other RADIUS servers with their IP addresses and shared secrets. Two such example stanzas (for FTLR proxying of unknown realms) are included here.--!>
+
+{% for flr in flrs %}
+
+  home_server {{ flr.shortname }}.mw4 {
+          type                    = auth+acct
+          ipaddr                  = {{ flr.ip4 }}
+          port                    = 1812
+          secret                  = {{ flr_secret }}
+          response_window         = 20
+          zombie_period           = 40
+          revive_interval         = 60
+          status_check            = status-server
+          check_interval          = 30
+          num_answers_to_alive    = 3
+  }
+  {% if flr.ipv6_enabled %}
+    home_server {{ flr.shortname }}.mw6 {
+           type                    = auth+acct
+           ipv6addr                = {{ flr.ip6 }}
+           port                    = 1812
+           secret                  = {{ flr_secret }}
+           response_window         = 20
+           zombie_period           = 40
+           revive_interval         = 60
+           status_check            = status-server
+           check_interval          = 30
+           num_answers_to_alive    = 3
+    }
+  {% endif %}
+
+{% endfor %}
+
+
+#<!-- The parameters response_window, zombie_period and revive_interval are tuning parameters and should initially remain untouched. Using status_check = status-server is recommended, but only if the server on the other end is configured to handle such Status-Server requests. This behaviour is configured  in radiusd.conf.--!>
+
+
+
+#<!-- Home servers are aggregated in pools (i.e.: all servers that have the same function, like: all FTLR servers, are grouped together). This happens in a home_server_pool definition:--!>
+
+
+home_server_pool EDUROAM-FTLR {
+        type                    = fail-over
+    {% for flr in flrs %}
+        home_server             = {{ flr.shortname }}.mw4
+      {% if flr.ipv6_enabled %}
+        home_server             = {{ flr.shortname }}.mw6
+      {% endif %}
+    {% endfor %}
+}
+
+
+
+#<!-- Realms known to the server are listed in realm sections. The nostrip command specifies that no domain stripping is performed (usernames always remain Network Access Identifier in the form short_username@domain.tld, for both local and roaming users).--!>
+
+
+{% for realm in realms %}
+
+realm {{ realm }} {
+#	  nostrip
+}
+
+{% endfor %}
+
+
+realm LOCAL {
+	  nostrip
+}
+
+realm NULL {
+	  nostrip
+}
+
+realm DEFAULT {
+        pool                    = EDUROAM-FTLR
+        nostrip
+}
