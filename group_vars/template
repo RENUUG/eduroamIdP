@@ -62,9 +62,9 @@ flrs:
 
 ### NRO Switchboard, eg. eduroam.ubuntunet.net ###
 
-#switchboard:
-#  name: Switchboard
-#  ip4: 168.253.217.136
+switchboard:
+  name: Switchboard
+  ip4: 168.253.217.136
 
 
 ### Additional Roles ###
