@@ -4,7 +4,7 @@ clients:
 
   -
     name: MyAP
-    ip4: 123.345.567.789
+    ip4: 196.43.128.254
     secret: MySecret
   # -
   #   name: MyOtherAP
@@ -29,6 +29,3 @@ clients:
     name: LocalLoopback
     ip4: 127.0.0.1
     secret: testing123
-
-
-

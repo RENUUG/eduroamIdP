@@ -44,12 +44,12 @@ flrs:
     ip6:
 
   # Second instance for Redundancy
-  -
-    name: renu-flr-2
-    shortname: renu-flr-2
-    ip4: 196.43.140.135
-    ipv6_enabled: False
-    ip6:
+#  -
+#    name: renu-flr-2
+#    shortname: renu-flr-2
+#    ip4: 196.43.140.135
+#    ipv6_enabled: False
+#    ip6:
 
   ## Second instance for Redundancy
   # -
@@ -61,10 +61,10 @@ flrs:
 
 
 ### NRO Switchboard, eg. eduroam.ubuntunet.net ###
-
+#This is to be replaced with the second RENU FLR
 switchboard:
-  name: Switchboard
-  ip4: 168.253.217.136
+  name: renu-flr-2
+  ip4: 196.43.140.135
 
 
 ### Additional Roles ###
