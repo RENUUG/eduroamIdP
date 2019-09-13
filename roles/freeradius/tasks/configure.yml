@@ -49,7 +49,7 @@
     src: "{{ radius.config_path }}/mods-available/eap"
     dest: "{{ radius.config_path }}/mods-enabled/eap"
     state: link
-    notify: restart freeradius
+  notify: restart freeradius
 
 - name: Copy LDAP module if enabled
   template:
