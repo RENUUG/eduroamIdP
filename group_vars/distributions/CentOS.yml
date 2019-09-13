@@ -1,2 +1,3 @@
 radius:
   config_path: /etc/raddb
+  config_owner: radiusd

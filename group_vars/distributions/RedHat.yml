@@ -1,3 +1,4 @@
 radius:
   name: radiusd
   config_path: /etc/raddb
+  config_owner: radiusd

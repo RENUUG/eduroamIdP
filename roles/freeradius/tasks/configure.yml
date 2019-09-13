@@ -126,3 +126,11 @@
     -extensions v3_ca \
     creates="{{radius.config_path}}/certs/{{ realms[0] }}.crt"
   notify: restart freeradius
+
+#Change ownership of the freeradius folder to the freeradius default user
+- name: Change file ownership
+  file:
+    path: "{{ radius.config_path }}"
+    owner: "{{ radius.config_owner }}"
+    group: "{{ radius.config_owner }}"
+  notify: restart freeradius
