@@ -2,7 +2,7 @@
 #<!--proxy.conf contains a small configuration stanza; proxy server for system-wide options:--!>
 
 proxy server {
-        default_fallback        = yes
+        default_fallback        = no
 }
 #<!-- This setting means that if an authentication request contains a realm that is not explicitly listed in later sections of this file, it is proxied to the DEFAULT realm.--!>
 
@@ -11,20 +11,15 @@ proxy server {
 
 {% for flr in flrs %}
 
-  home_server {{ flr.shortname }}.mw4 {
+  home_server {{ flr.shortname }} {
           type                    = auth+acct
           ipaddr                  = {{ flr.ip4 }}
           port                    = 1812
           secret                  = {{ flr_secret }}
-          response_window         = 20
-          zombie_period           = 40
-          revive_interval         = 60
           status_check            = status-server
-          check_interval          = 30
-          num_answers_to_alive    = 3
   }
   {% if flr.ipv6_enabled %}
-    home_server {{ flr.shortname }}.mw6 {
+    home_server {{ flr.shortname }} {
            type                    = auth+acct
            ipv6addr                = {{ flr.ip6 }}
            port                    = 1812
@@ -51,9 +46,9 @@ proxy server {
 home_server_pool EDUROAM-FTLR {
         type                    = fail-over
     {% for flr in flrs %}
-        home_server             = {{ flr.shortname }}.mw4
+        home_server             = {{ flr.shortname }}
       {% if flr.ipv6_enabled %}
-        home_server             = {{ flr.shortname }}.mw6
+        home_server             = {{ flr.shortname }}
       {% endif %}
     {% endfor %}
 }
@@ -80,7 +75,12 @@ realm NULL {
 	  nostrip
 }
 
+realm "~.+$" {
+        pool                    = EDUROAM
+        nostrip
+}
+
 realm DEFAULT {
-        pool                    = EDUROAM-FTLR
+        pool                    = EDUROAM
         nostrip
 }
