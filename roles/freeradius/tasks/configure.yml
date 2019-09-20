@@ -104,16 +104,16 @@
     state: link
   notify: restart freeradius
 
-- name: Copy sites/inner-tunnel-eduroam
+- name: Copy sites/eduroam-inner-tunnel
   template:
-    src: sites_inner-tunnel-eduroam.j2
-    dest: "{{radius.config_path}}/sites-available/inner-tunnel-eduroam"
+    src: sites_eduroam-inner-tunnel.j2
+    dest: "{{radius.config_path}}/sites-available/eduroam-inner-tunnel"
   notify: restart freeradius
 
-- name: Enable sites/inner-tunnel-eduroam
+- name: Enable sites/eduroam-inner-tunnel
   file:
-    src: "{{radius.config_path}}/sites-available/inner-tunnel-eduroam"
-    dest: "{{radius.config_path}}/sites-enabled/inner-tunnel-eduroam"
+    src: "{{radius.config_path}}/sites-available/eduroam-inner-tunnel"
+    dest: "{{radius.config_path}}/sites-enabled/eduroam-inner-tunnel"
     state: link
   notify: restart freeradius
 
