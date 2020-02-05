@@ -1,11 +1,11 @@
-radius ansible_host=196.43.159.185
+radius ansible_host= #IP
 
 [idp]
 radius
 
 [idp:vars]
-ansible_user=ubuntu
-ansible_ssh_pass=renu123
+ansible_user= #username
+ansible_ssh_pass= #ssh_password
 
 [<tld_institution>:children]
 idp
