@@ -1,11 +1,14 @@
 ### Access Points ###
-
+##Change the values below to fit into your network
 clients:
 
   -
-    name: MyAP
-    ip4: 196.43.128.254
+    name: MyAP_network
+    ip4: 137.63.128.0
+    netmask: 24
     secret: MySecret
+
+  #
   # -
   #   name: MyOtherAP
   #   ip4: 123.345.567.789
@@ -16,16 +19,3 @@ clients:
   #   secret: AnotherSecret
   #   netmask: 24
   #   nastype: other
-
-
-
-  ## Usually no need to touch these two test entries ##
-  ## Unless to change the shared secrets for security reasons  ##
-  -
-    name: TestLocal
-    ip4: "{{ ansible_host }}"
-    secret: testing123
-  -
-    name: LocalLoopback
-    ip4: 127.0.0.1
-    secret: testing123

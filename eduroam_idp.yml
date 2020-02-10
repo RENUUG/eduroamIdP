@@ -24,7 +24,7 @@
   vars_files:
     - group_vars/secrets.yml
     - group_vars/clients.yml
-    - group_vars/<tld_institution>
+    - group_vars/template
   roles:
     - freeradius
     - { role: eapol_test, when: play_eapol == True }

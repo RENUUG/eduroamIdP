@@ -5,9 +5,17 @@ radius
 
 [idp:vars]
 ansible_user=ubuntu
-ansible_ssh_pass=<the user password>
-ansible_sudo_pass=<the user password>
-#I would recommend using keys and passwordless sudo access
+
+#I would recommend using keys and passwordless sudo access.
+#uncomment below if you are not using ssh keys
+#ansible_ssh_pass=<the user password>
+
+#uncomment below if you are not using passwordless sudo access
+#ansible_sudo_pass=<the user password>
+
+
+#Only uncomment this if you are using private keys in a different location
+#private_key_file=/path/to/private_key_file
 
 [<tld_institution>:children]
 idp

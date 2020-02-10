@@ -7,11 +7,11 @@ country_code: UG
 
 
 ### User Stores ###
-
 # LDAP
 ldap:
   enabled: False
-  server: ldap.example.net
+  server: ldap.example.ac.ug
+  #base_dn: cn=users,cn=accounts,dc=example,dc=ac,dc=ug   ##for freeIPA
   base_dn: ou=people,dc=example,dc=ac,dc=ug
   filter: "{% raw %}(uid=%{%{Stripped-User-Name}:-%{User-Name}}){% endraw %}"
   # How are user passwords saved in LDAP
@@ -31,41 +31,6 @@ sql:
 file:
   enabled: True
   test_user_name: roamer
-
-
-### Federation/National Level Roaming Operators ###
-
-flrs:
-  -
-    name: renu-flr-1
-    shortname: renu-flr-1
-    ip4: 196.43.185.12
-    ipv6_enabled: False
-    ip6:
-
-  # Second instance for Redundancy
-#  -
-#    name: renu-flr-2
-#    shortname: renu-flr-2
-#    ip4: 196.43.140.135
-#    ipv6_enabled: False
-#    ip6:
-
-  ## Second instance for Redundancy
-  # -
-  #   name: flra.eduroam
-  #   shortname: flra
-  #   ip4: 168.253.217.72
-  #   ipv6_enabled: True
-  #   ip6: 2002:2946:1802:b:ca1f:66ff:feb9:ce58
-
-
-### NRO Switchboard, eg. eduroam.ubuntunet.net ###
-#This is to be replaced with the second RENU FLR
-switchboard:
-  name: renu-flr-2
-  ip4: 196.43.140.135
-
 
 ### Additional Roles ###
 
