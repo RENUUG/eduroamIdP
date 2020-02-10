@@ -100,3 +100,9 @@
     dest: "{{radius.config_path}}/sites-enabled/eduroam-inner-tunnel"
     state: link
   notify: restart freeradius
+  
+- name: Change file ownership, group for FreeRADIUS
+  file:
+    path: /etc/freeradius
+    owner: freerad
+    group: freerad
