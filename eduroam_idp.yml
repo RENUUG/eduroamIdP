@@ -28,6 +28,7 @@
   roles:
     - freeradius
     - { role: eapol_test, when: play_eapol == True }
+    - { role: winauth, when: win_auth.enabled == True }
 
   handlers:
     - name: restart freeradius

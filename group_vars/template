@@ -18,6 +18,15 @@ ldap:
   # user_password_type: Cleartext-Password
   user_password_type: Password-With-Header
 
+# Windows Active Directory
+#Windows authentication to be add
+win_auth:
+  enabled: False
+  type: Active Directory
+  server: ad.example.ac.ug
+  port: 636
+  user: Administrator
+
 # SQL Database (mysql or postgresql)
 sql:
   enabled: False
@@ -31,6 +40,8 @@ sql:
 file:
   enabled: True
   test_user_name: roamer
+
+
 
 ### Additional Roles ###
 
