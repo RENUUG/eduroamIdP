@@ -17,6 +17,11 @@
 # - name: Edit dictionary to add Operator Name
 #   lineinfile: dest=""{{ radius.config_path }}/dictionary" regexp="^Operator-Name"  line="ATTRIBUTE  Operator-Name     126  string"
 
+- name: Create the certificates using the make command
+  make:
+    chdir: {{ radius.config_path }}/certs
+  notify: restart freeradius
+
 - name: checking for Operator Name in dictionary
   shell: cat {{ radius.config_path }}/dictionary | grep Operator-Name | wc -l
   register: test_grep
@@ -100,7 +105,7 @@
     dest: "{{radius.config_path}}/sites-enabled/eduroam-inner-tunnel"
     state: link
   notify: restart freeradius
-  
+
 - name: Change file ownership, group for FreeRADIUS
   file:
     path: /etc/freeradius

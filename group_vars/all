@@ -6,3 +6,4 @@ netmask: 24
 nastype: other
 virtual_server: eduroam
 inner_tunnel: eduroam-inner-tunnel
+key_password: whatever
