@@ -50,9 +50,16 @@
 
 - name: Copy eap configuration
   template:
-    src: eap.conf.j2
-    dest: "{{radius.config_path}}/eap.conf"
+    src: eap.j2
+    dest: "{{radius.config_path}}/mods-available/eap"
     backup: yes
+  notify: restart freeradius
+
+- name: Enable EAP module if enabled
+  file:
+    src: "{{radius.config_path}}/mods-available/eap"
+    dest: "{{radius.config_path}}/mods-enabled/eap"
+    state: link
   notify: restart freeradius
 
 #For AD, another role is to be set up in later updates
@@ -108,6 +115,6 @@
 
 - name: Change file ownership, group for FreeRADIUS
   file:
-    path: /etc/freeradius
+    path: {{radius.config_path}}
     owner: freerad
     group: freerad

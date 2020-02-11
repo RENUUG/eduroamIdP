@@ -1,5 +1,4 @@
-realms:
-  - example.ac.ug
+realms: example.ac.ug
 
 organisation: Example University
 city: Kampala
