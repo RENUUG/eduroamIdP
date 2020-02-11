@@ -63,6 +63,20 @@
     state: link
   notify: restart freeradius
 
+- name: Copy f_ticks module configuration
+  copy:
+    src: f_ticks
+    dest: "{{radius.config_path}}/mods-available/f_ticks"
+    #backup: yes
+  notify: restart freeradius
+
+- name: Enable f_ticks module
+  file:
+    src: "{{radius.config_path}}/mods-available/f_ticks"
+    dest: "{{radius.config_path}}/mods-enabled/f_ticks"
+    state: link
+  notify: restart freeradius
+
 #For AD, another role is to be set up in later updates
 - name: Copy LDAP module if enabled
   template:
@@ -85,13 +99,12 @@
   template:
     src: users.j2
     dest: "{{radius.config_path}}/users"
-    backup: yes
   notify: restart freeradius
   when: file.enabled == True
 
 - name: Copy sites/eduroam
   template:
-    src: sites_default-eduroam.j2
+    src: site-eduroam.j2
     dest: "{{radius.config_path}}/sites-available/eduroam"
   notify: restart freeradius
 

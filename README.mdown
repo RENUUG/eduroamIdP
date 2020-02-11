@@ -28,6 +28,8 @@
 
 - Adopt the variables in group_vars/<tld_institution> to your liking
 
+- Edit eduroam_idp.yml and replace group_vars/template with group_vars/<tld_institution>
+
 - Copy the clients template, where you'll be adding the information about the clients that are connecting to your Radius server
 
         cp group_vars/clients.yml.example group_vars/clients.yml
@@ -67,7 +69,7 @@ and check for an "Access-Accept" in the response.
   - Log into your machine
   - Stop the freeradius daemon
 
-            sudo service freeradius stop 
+            sudo service freeradius stop
   - Start it manually in debug mode
 
             sudo freeradius -X
@@ -92,5 +94,3 @@ See also http://deployingradius.com/scripts/eapol_test
 - Run the test
 
           eapol_test -c ~/peap-mschapv2.conf -s testing123
-
-
