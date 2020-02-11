@@ -20,7 +20,7 @@
 
 - name: Create the certificates using the make command
   make:
-    chdir: {{ radius.config_path }}/certs
+    chdir: "{{ radius.config_path }}/certs"
   notify: restart freeradius
 
 - name: checking for Operator Name in dictionary
@@ -71,6 +71,7 @@
     backup: yes
   notify: restart freeradius
   when: ldap.enabled == True
+  tags: ldaps
 
 - name: Enable LDAP module if enabled
   file:
@@ -116,6 +117,7 @@
 
 - name: Change file ownership, group for FreeRADIUS
   file:
-    path: {{radius.config_path}}
+    path: "{{radius.config_path}}"
     owner: freerad
     group: freerad
+    recurse: yes
