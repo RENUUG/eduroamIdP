@@ -4,11 +4,11 @@ I do not own this content and I pay credit to the efforts done by Ubuntunet team
 
 Again, this repository was created to customise the original scripts to fit in with the Ugandan NREN as a separate project to help easily automate eduroam set up in Uganda.
 
-If you have read and understood the above, either continue to README.mdown or you can visit the link below to access th e original
+If you have read and understood the above, either continue to README.mdown or you can visit the link below to access the original
 
 https://github.com/ubuntunet/eduroam_radius
 
-Either way, good luck
+Either way, Good Luck
 
 # Ansible Playbook for an eduroam IdP/Radius server
 

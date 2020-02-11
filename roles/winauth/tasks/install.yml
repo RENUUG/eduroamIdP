@@ -1,1 +1,10 @@
 #This playbook will have the installation steps for samba, winbind and krb
+- name: Install modules if enabled
+  package:
+    name: {{ item }}
+    state: latest
+    with_items:
+      - freeradius-krb5
+      - samba
+      - winbind
+      - krb5-config
