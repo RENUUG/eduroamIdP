@@ -46,8 +46,10 @@ server eduroam {
         post-auth {
                 # if you want detailed logging
                 reply_log
+                f_ticks
                 Post-Auth-Type REJECT {
                         reply_log
+                        f_ticks
                 }
         }
 
