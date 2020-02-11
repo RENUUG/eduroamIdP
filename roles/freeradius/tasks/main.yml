@@ -1,2 +1,2 @@
 - import_tasks: install.yml
-- import_tasks: configure18.yml
+- import_tasks: configure.yml

@@ -1,27 +1,42 @@
 - name: Reduce Reject Delay
-  replace: 
+  replace:
     dest: "{{radius.config_path}}/radiusd.conf"
-    regexp: 'reject_delay = 1' 
+    regexp: 'reject_delay = 1'
     replace: 'reject_delay = 0'
   notify: restart freeradius
 
-- name: Copy dictionary with Operator-Name
-  copy: 
-    src: files/dictionary
-    dest: "{{ radius.config_path }}/dictionary"
-    backup: yes
+
+# This was no longer needed as dictionary( for freeradius 3.0.16)
+# already had all elements to be added
+# - name: Copy dictionary with Operator-Name
+#   copy:
+#     src: files/dictionary
+#     dest: "{{ radius.config_path }}/dictionary"
+#     backup: yes
+#   notify: restart freeradius
+
+# - name: Edit dictionary to add Operator Name
+#   lineinfile: dest=""{{ radius.config_path }}/dictionary" regexp="^Operator-Name"  line="ATTRIBUTE  Operator-Name     126  string"
+
+- name: Create the certificates using the make command
+  make:
+    chdir: "{{ radius.config_path }}/certs"
   notify: restart freeradius
 
-- name: Copy attrs.pre-proxy with Operator-Name
-  copy: 
-    src: files/attrs.pre-proxy
-    dest: "{{ radius.config_path }}/attrs.pre-proxy"
-    backup: yes
-  notify: restart freeradius
+- name: checking for Operator Name in dictionary
+  shell: cat {{ radius.config_path }}/dictionary | grep Operator-Name | wc -l
+  register: test_grep
 
+- debug: msg="{{test_grep.stdout}}"
+
+- name: adding Operator Name in dictionary
+  lineinfile: dest="{{ radius.config_path }}/dictionary" line="ATTRIBUTE  Operator-Name     126  string"
+  when: test_grep.stdout == "0"
+
+# Fitted it for Ugandan radius proxies for both client and proxy.conf
 - name: Copy clients configuration
-  template: 
-    src: clients.conf.j2 
+  template:
+    src: clients.conf.j2
     dest: "{{ radius.config_path }}/clients.conf"
     backup: yes
   tags: clients
@@ -29,74 +44,101 @@
 
 - name: Copy proxy configuration
   template:
-    src: proxy.conf.j2 
+    src: proxy.conf.j2
     dest: "{{radius.config_path}}/proxy.conf"
     backup: yes
   notify: restart freeradius
 
 - name: Copy eap configuration
   template:
-    src: eap.conf.j2 
-    dest: "{{radius.config_path}}/eap.conf"
+    src: eap.j2
+    dest: "{{radius.config_path}}/mods-available/eap"
     backup: yes
   notify: restart freeradius
 
+- name: Enable EAP module if enabled
+  file:
+    src: "{{radius.config_path}}/mods-available/eap"
+    dest: "{{radius.config_path}}/mods-enabled/eap"
+    state: link
+  notify: restart freeradius
+
+- name: Copy f_ticks module configuration
+  copy:
+    src: f_ticks
+    dest: "{{radius.config_path}}/mods-available/f_ticks"
+    #backup: yes
+  notify: restart freeradius
+
+- name: Enable f_ticks module
+  file:
+    src: "{{radius.config_path}}/mods-available/f_ticks"
+    dest: "{{radius.config_path}}/mods-enabled/f_ticks"
+    state: link
+  notify: restart freeradius
+
+#For AD, another role is to be set up in later updates
 - name: Copy LDAP module if enabled
   template:
-    src: modules-ldap.j2 
-    dest: "{{radius.config_path}}/modules/ldap"
+    src: ldap-module.j2
+    dest: "{{radius.config_path}}/mods-available/ldap"
     backup: yes
   notify: restart freeradius
   when: ldap.enabled == True
+  tags: ldaps
 
-- name: Copy LDAP attributemap if enabled
-  template:
-    src: ldap.attrmap.j2 
-    dest: "{{radius.config_path}}/ldap.attrmap"
-    backup: yes
+- name: Enable LDAP module if enabled
+  file:
+    src: "{{radius.config_path}}/mods-available/ldap"
+    dest: "{{radius.config_path}}/mods-enabled/ldap"
+    state: link
   notify: restart freeradius
   when: ldap.enabled == True
 
 - name: Add test user if enabled
   template:
-    src: users.j2 
+    src: users.j2
     dest: "{{radius.config_path}}/users"
-    backup: yes
   notify: restart freeradius
   when: file.enabled == True
 
-- name: Copy sites/default-eduroam
+- name: Copy sites/eduroam
   template:
-    src: sites_default-eduroam.j2 
-    dest: "{{radius.config_path}}/sites-available/default-eduroam"
+    src: site-eduroam.j2
+    dest: "{{radius.config_path}}/sites-available/eduroam"
   notify: restart freeradius
 
-- name: Enable sites/default-eduroam
+- name: Enable sites/eduroam
   file:
-    src: "{{radius.config_path}}/sites-available/default-eduroam" 
-    dest: "{{radius.config_path}}/sites-enabled/default-eduroam"
-    state: link 
-  notify: restart freeradius
-
-- name: Copy sites/inner-tunnel-eduroam
-  template:
-    src: sites_inner-tunnel-eduroam.j2 
-    dest: "{{radius.config_path}}/sites-available/inner-tunnel-eduroam"
-  notify: restart freeradius
-
-- name: Enable sites/inner-tunnel-eduroam
-  file:
-    src: "{{radius.config_path}}/sites-available/inner-tunnel-eduroam"
-    dest: "{{radius.config_path}}/sites-enabled/inner-tunnel-eduroam"
+    src: "{{radius.config_path}}/sites-available/eduroam"
+    dest: "{{radius.config_path}}/sites-enabled/eduroam"
     state: link
   notify: restart freeradius
 
-- name: create self-signed SSL cert
-  command: openssl req -new -nodes -x509 \ 
-    -subj "/C={{ country_code }}/L={{ city }}/O={{ organisation }}/CN={{ realms[0] }}" \
-    -days 3650 \
-    -keyout "{{radius.config_path}}/certs/{{ realms[0] }}.key" \
-    -out "{{radius.config_path}}/certs/{{ realms[0] }}.crt" \
-    -extensions v3_ca \
-    creates="{{radius.config_path}}/certs/{{ realms[0] }}.crt"
+- name: Copy sites/eduroam-inner-tunnel
+  template:
+    src: sites_eduroam-inner-tunnel.j2
+    dest: "{{radius.config_path}}/sites-available/eduroam-inner-tunnel"
   notify: restart freeradius
+
+- name: Enable sites/eduroam-inner-tunnel
+  file:
+    src: "{{radius.config_path}}/sites-available/eduroam-inner-tunnel"
+    dest: "{{radius.config_path}}/sites-enabled/eduroam-inner-tunnel"
+    state: link
+  notify: restart freeradius
+
+- name: Remove default RADIUS sites
+  file:
+    path: "{{radius.config_path}}/sites-enabled/{{ item }}"
+    state: absent
+  with_items:
+    - default
+    - inner-tunnel
+
+- name: Change file ownership, group for FreeRADIUS
+  file:
+    path: "{{radius.config_path}}"
+    owner: freerad
+    group: freerad
+    recurse: yes
