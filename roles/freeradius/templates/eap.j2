@@ -170,8 +170,8 @@ eap {
 	#  ANYONE who has a certificate signed by them can
 	#  authenticate via EAP-TLS!  This is likely not what you want.
 	tls-config tls-common {
-		private_key_password = {{ certs_key }}
-		private_key_file = ${certdir}/server.pem
+		private_key_password = {{ certs_key | default(key_password)}}
+		private_key_file = ${certdir}/server.key
 
 		#  If Private key & Certificate are located in
 		#  the same file, then private_key_file &

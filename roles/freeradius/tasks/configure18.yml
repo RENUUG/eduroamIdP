@@ -5,6 +5,7 @@
     replace: 'reject_delay = 0'
   notify: restart freeradius
 
+
 # This was no longer needed as dictionary( for freeradius 3.0.16)
 # already had all elements to be added
 # - name: Copy dictionary with Operator-Name
