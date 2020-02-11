@@ -163,7 +163,7 @@
   		#  "samaccountname=" instead of "uid="
   		#
   		#filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
-      filter = "{{ ldap.filter }}"
+      filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
 
   		#  SASL parameters to use for user binds
   		#
