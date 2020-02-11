@@ -128,6 +128,14 @@
     state: link
   notify: restart freeradius
 
+- name: Remove default RADIUS sites
+  file:
+    path: "{{radius.config_path}}/sites-enabled/{{ item }}"
+    state: absent
+  with_items:
+    - default
+    - inner-tunnel
+
 - name: Change file ownership, group for FreeRADIUS
   file:
     path: "{{radius.config_path}}"
