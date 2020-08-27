@@ -16,11 +16,11 @@ Either way, Good Luck
 
 - Clone the repository from Github
 
-        git clone https://github.com/Ssedrick1643/RENUansible_eduroam.git
+        git clone https://github.com/Ssedrick1643/eduroamIdP.git
 
 - Change into the newly created directory
 
-        cd RENUansible_eduroam
+        cd eduroamIdP
 
 - Copy the inventory template
 
