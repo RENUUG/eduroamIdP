@@ -16,7 +16,7 @@ Either way, Good Luck
 
 - Clone the repository from Github
 
-        git clone https://github.com/Ssedrick1643/eduroamIdP.git
+        git clone https://github.com/RENUUG/eduroamIdP.git
 
 - Change into the newly created directory
 
