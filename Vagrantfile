@@ -1,79 +1,34 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+#    #This vagrant file has been edited to fit in only relevant code.
+#    #For a more explained vagrant file. Kindly check on the 'vagrantbackup' in this same directory
+#    #The comments here provide you with a more understanding of why its here. Specifically for this project
+#    #Kindly read more about Vagrant from other sources if you want to understand it more
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
+#    #This box specifies which OS will be installed.
+#    #If this box is not yet existent on your machine. It will first download it.
+#    #Therefore, your first 'vagrant up' command will take a longer while
+config.vm.box = "ubuntu/bionic64"
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/bionic64"
+#    #Used piblic network because the best option in this case would be a bridged network on your VirtualBox
+#    #Check 'vagrantbackup' for other options
+#    #If for some reason you want to create/recreate the instance with the same IP, uncomment and edit the IP section
+#    #This has to be an IP in the range of your host's connected IPs
+config.vm.network "public_network"    #, ip: "196.43.159.139"
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+#    #Hostname assigned to the vm after creation.
+#    #Not so relevant to eduroam tests but gives a closer feel of the actual deployment
+#    #Edit it to a full hostname you would prefer for your test server
+config.vm.hostname = "radius.test.renu.ac.ug"
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+    #VirtualBox Additional configs
+config.vm.provider "virtualbox" do |vb|
+#   # Display the VirtualBox GUI when booting the machine
+   vb.gui = false
+#   # The name should on VirtualBox, edit to something preferable for you
+   vb.name = "eduroam"
+#   # Customize the amount of memory on the VM:
+#   # Freeradius is not so heavy on RAM so even 512 or even 256 can do. Depends on your host capacity
+   vb.memory = "1024"
+end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  config.vm.network "public_network"    #, ip: "196.43.159.139"
-
-  config.vm.hostname = "radius.test.renu.ac.ug"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-     vb.gui = true
-     vb.name = "eduroam"
-  #   vb.hostname = "radius.test.renu.ac.ug"
-  #
-  #   # Customize the amount of memory on the VM:
-     vb.memory = "1024"
-  end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-     sudo apt update
-     sudo apt install software-properties-common
-     sudo apt-add-repository --yes --update ppa:ansible/ansible
-     sudo apt install -y ansible cowsay sshpass
-     sudo apt upgrade -y
-     cat /dev/zero | ssh-keygen -q -N ""
-     cat .ssh/id_rsa.pub >> .ssh/authorized_keys
-   SHELL
+#   # Never say the relevance to add in any scripts. Thats all folks
 end

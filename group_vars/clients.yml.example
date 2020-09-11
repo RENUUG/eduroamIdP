@@ -1,21 +1,28 @@
-### Access Points ###
-##Change the values below to fit into your network
+---
+#   # ### Access Points ###
+#   # Change the values below to fit into your network
 clients:
-
-  -
-    name: MyAP_network
+  - name: MyAP_network
     ip4: 137.63.128.0
     netmask: 24
     secret: MySecret
 
-  #
-  # -
-  #   name: MyOtherAP
-  #   ip4: 123.345.567.789
-  #   secret: MyOtherSecret
-  # -
-  #   name: TestAP with customized netmask & nastype
-  #   ip4: 1.2.3.0
-  #   secret: AnotherSecret
-  #   netmask: 24
-  #   nastype: other
+
+#   # Additional Access Points or Access Point Networks can be added here
+#   # ######  IMPORTANT ######
+#   # For additional APs, please remove only remove the ''#''
+#   # If for some reason you made an error on deleting, ensure that '-' before 'name' is just 2 spaces away from the left
+#   # And all below it are just 4 spaces away from the left, or on the same line with 'name'
+#   # Its highly IMPORTANT that you maintain this otherwise you will encounter yaml errors
+#   # Ensure that the name is does not have spaces in between
+#   # For more clients/APs, just add them by copy pasting then change the values
+
+#  - name: Another_AP
+#    ip4: 123.345.567.789
+#    secret: MyOtherSecret
+#
+#  - name: TestAP_with_customized_netmask_and_nastype
+#    ip4: 1.2.3.0
+#    secret: AnotherSecret
+#    netmask: 24
+#    nastype: other

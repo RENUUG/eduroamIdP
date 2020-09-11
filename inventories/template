@@ -1,21 +1,28 @@
+#   # Replace <FQDN or IP> with your Fully Qualified Domain Name or server IP
+#   # Examples; radius.test.renu.ac.ug , 196.43.129.21, 137.63.152.81, eduroam.test.renu.ac.ug
 radius ansible_host=<FQDN or IP>
 
 [idp]
 radius
 
 [idp:vars]
+#   # This can be replaced with any other user of your choice
+#   # For the case of vagrant, replace the user with vagrant
 ansible_user=ubuntu
 
-#I would recommend using keys and passwordless sudo access.
-#uncomment below if you are not using ssh keys
+#   # I would recommend using keys and passwordless sudo access.
+#   # Uncomment below if you are not using ssh keys
 #ansible_ssh_pass=<the user password>
 
-#uncomment below if you are not using passwordless sudo access
+#   # Uncomment below if you are not using passwordless sudo access
 #ansible_sudo_pass=<the user password>
 
 
-#Only uncomment this if you are using private keys in a different location
+#   # Only uncomment this if you are using private keys in a different location
 #private_key_file=/path/to/private_key_file
 
+#   # <tld_institution> like in all places can be replaced with a name you prefer
+#   # This can be something like renu.ac.ug, test.renu.ac.ug, metro.renu.ac.ug
+#   # To maintain consistency, <tld_institution> should be replaced with the same value in all places
 [<tld_institution>:children]
 idp
