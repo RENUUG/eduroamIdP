@@ -6,4 +6,5 @@
 group_vars/*secrets.yml
 group_vars/*clients*.yml
 
-.vagrant%
+.vagrant/
+*.log
