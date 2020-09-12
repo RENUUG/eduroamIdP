@@ -1,3 +1,4 @@
 radius:
   name: freeradius
   config_path: /etc/freeradius/3.0
+  config_owner: freerad

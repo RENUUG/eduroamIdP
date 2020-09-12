@@ -22,7 +22,7 @@ config.vm.hostname = "radius.test.renu.ac.ug"
     #VirtualBox Additional configs
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
-   vb.gui = false
+    #vb.gui = false
 #   # The name should on VirtualBox, edit to something preferable for you
    vb.name = "eduroam"
 #   # Customize the amount of memory on the VM:
