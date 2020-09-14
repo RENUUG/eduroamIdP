@@ -22,6 +22,10 @@ Either way, Good Luck
 
         :~$ cd eduroamIdP
 
+- Install ansible and all its dependencies
+
+        :~/eduroamIdP$ sudo ./install-ansible.sh
+
 - Copy the inventory template
 
         :~/eduroamIdP$ cp inventories/template inventories/<tld_institution>
