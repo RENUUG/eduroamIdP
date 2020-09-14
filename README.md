@@ -24,6 +24,7 @@ Either way, Good Luck
 
 - Install ansible and all its dependencies
 
+        :~/eduroamIdP$ chmod +x ./install-ansible.sh
         :~/eduroamIdP$ sudo ./install-ansible.sh
 
 - Copy the inventory template
