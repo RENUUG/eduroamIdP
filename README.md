@@ -35,6 +35,7 @@ Either way, Good Luck
 
   - FQDN or IP with the actual URL/IP of your server
   - <tld_institution> with your actual inventory file name
+  - Examples of <tld_institution> would be; test.renu.ac.ug
 
 - Copy the group_vars template
 
