@@ -16,15 +16,15 @@ Either way, Good Luck
 
 - Clone the repository from Github
 
-        git clone https://github.com/RENUUG/eduroamIdP.git
+        :~$ git clone https://github.com/RENUUG/eduroamIdP.git ~/
 
 - Change into the newly created directory
 
-        cd eduroamIdP
+        :~$ cd eduroamIdP
 
 - Copy the inventory template
 
-        cp inventories/template inventories/<tld_institution>
+        :~/eduroamIdP$ cp inventories/template inventories/<tld_institution>
 
 - Open your new inventory and replace
 
@@ -33,17 +33,17 @@ Either way, Good Luck
 
 - Copy the group_vars template
 
-        cp group_vars/template group_vars/<tld_institution>
+        :~/eduroamIdP$ cp group_vars/template group_vars/<tld_institution>
 
 - Adopt the variables in group_vars/<tld_institution> to your liking
 
 - Copy the clients template, where you'll be adding the information about the clients that are connecting to your Radius server
 
-        cp group_vars/clients.yml.example group_vars/clients.yml
+        :~/eduroamIdP$ cp group_vars/clients.yml.example group_vars/clients.yml
 
 - Create the secret.yml file that contains your sensitive information. Add your credentials.
 
-        cp group_vars/secrets.yml.example group_vars/secrets.yml
+        :~/eduroamIdP$ cp group_vars/secrets.yml.example group_vars/secrets.yml
 
 - Edit eduroam_idp.yml and add replace <tld_institution> with your actual inventory file name on line 27
 
@@ -51,7 +51,7 @@ Either way, Good Luck
 
 - Run the playbook and make sure it finishes without error messages. Whenever you change something in the playbook, just replay this command.
 
-        ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml
+        :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml
 
 ## Adding a new client/access point (AP)
 
@@ -60,7 +60,7 @@ Either way, Good Luck
 - Change the name, IP address and shared secret
 - Re-run the playbook with the clients tag, which will only copy the clients.conf file making for a faster deployment
 
-        ansible-playbook -i inventories/<tld_institution> --tags "clients" eduroam_idp.yml
+        :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> --tags "clients" eduroam_idp.yml
 
 
 ## How do I check if it works?
@@ -80,10 +80,10 @@ and check for an "Access-Accept" in the response.
   - Log into your machine
   - Stop the freeradius daemon
 
-            sudo service freeradius stop
+            $ sudo service freeradius stop
   - Start it manually in debug mode
 
-            sudo freeradius -X
+            $ sudo freeradius -X
 
 ### Using eapol_test
 
@@ -95,12 +95,12 @@ See also http://deployingradius.com/scripts/eapol_test
 
 - Re-run playbook
 
-          ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml          
+          :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml          
 
 - Log into the server
 - Have a look at the configuration test file in your home folder
 
-          vi ~/peap-mschapv2.conf
+          vi peap-mschapv2.conf
 
 - Run the test
 
