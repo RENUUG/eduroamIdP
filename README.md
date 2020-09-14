@@ -33,7 +33,7 @@ Either way, Good Luck
 
 - Open your new inventory and replace
 
-  - FQDN or IP with the actual URL/IP of your server
+  - FQDN or IP with the actual URL/IP of your server
   - <tld_institution> with your actual inventory file name
 
 - Copy the group_vars template
