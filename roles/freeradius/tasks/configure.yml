@@ -156,7 +156,7 @@
 #  eduroam
 - name: Copy sites/eduroam
   template:
-    src: vsite-eduroam.j2
+    src: vsite_eduroam.j2
     dest: "{{radius.config_path}}/sites-available/eduroam"
   notify: restart freeradius
   tags:
