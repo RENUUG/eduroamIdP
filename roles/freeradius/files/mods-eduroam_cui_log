@@ -1,0 +1,21 @@
+linelog cui_log {
+#    filename = syslog
+    filename = ${logdir}/radius.log
+    format = ""
+    reference = "auth_log.%{%{reply:Packet-Type}:-format}"
+    auth_log {
+        Access-Accept = "%t : eduroam-auth#ORG=%{request:Realm}#USER=%{User-Name}#CSI=%{%{Calling-Station-Id}:-Unknown Caller Id}#NAS=%{%{Called-Station-Id}:-Unknown Access Point}#CUI=%{%{reply:Chargeable-User-Identity}:-Unknown}#MSG=%{%{EAP-Message}:-No EAP Message}#RESULT=OK#"
+        Access-Reject = "%t : eduroam-auth#ORG=%{request:Realm}#USER=%{User-Name}#CSI=%{%{Calling-Station-Id}:-Unknown Caller Id}#NAS=%{%{Called-Station-Id}:-Unknown Access Point}#CUI=%{%{reply:Chargeable-User-Identity}:-Unknown}#MSG=%{%{reply:Reply-Message}:-No Failure Reason}#RESULT=FAIL#"
+    }
+}
+
+linelog cui_inner_log {
+#    filename = syslog
+    filename = ${logdir}/radius.log
+    format = ""
+    reference = "inner_auth_log.%{%{reply:Packet-Type}:-format}"
+    inner_auth_log {
+        Access-Accept = "%t : eduroam-inner-auth#VISINST=%{request:Operator-Name}#USER=%{User-Name}#CSI=%{%{Calling-Station-Id}:-Unknown Caller Id}#NAS=%{%{Called-Station-Id}:-Unknown Access Point}#CUI=%{%{%{reply:Chargeable-User-Identity}:-%{outer.reply:Chargeable-User-Identity}}:-Local User}#RESULT=OK#"
+        Access-Reject = "%t : eduroam-inner-auth#VISINST=%{request:Operator-Name}#USER=%{User-Name}#CSI=%{%{Calling-Station-Id}:-Unknown Caller Id}#NAS=%{%{Called-Station-Id}:-Unknown Access Point}#CUI=%{%{%{reply:Chargeable-User-Identity}:-%{outer.reply:Chargeable-User-Identity}}:-Local User}#RESULT=FAIL#"
+    }
+}

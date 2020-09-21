@@ -16,36 +16,29 @@ client localhost {
 ## of your wireless infrastructure here.
 ##
 
-#client antarctica-access-point-2 {
-#       ipv6addr = 2001:db8:1:789::56
-#       netmask = 128
-#       secret = yoursecretABCDE
-#       shortname = southpole-11n
-#       virtual_server = eduroam
-#       require_message_authenticator = yes
-#}
-
 ##
 ## These are the eduroam FLR servers for your country
 ##
 client eduroam.renu.ac.ug {
-     ipaddr = 196.43.185.12
-     netmask = 32
-     secret= {{ flr_secret }}
-     require_message_authenticator = no
-     shortname = eduroam.renu.ac.ug
-     nas_type = other
-     virtual_server = eduroam
+     ipaddr                        = 196.43.185.12
+     netmask                       = 32
+     secret                        = {{ flr_secret }}
+     require_message_authenticator = yes
+     shortname                     = eduroam.renu.ac.ug
+     nas_type                      = other
+     add_cui                       = yes
+     virtual_server                = eduroam
 }
 
 client radius.ucu.ac.ug {
-     ipaddr = 196.43.140.135
-     netmask = 32
-     secret= {{ flr_secret }}
-     require_message_authenticator = no
-     shortname = radius.ucu.ac.ug
-     nas_type = other
-     virtual_server = eduroam
+     ipaddr                        = 196.43.140.135
+     netmask                       = 32
+     secret                        = {{ flr_secret }}
+     require_message_authenticator = yes
+     shortname                     = radius.ucu.ac.ug
+     nas_type                      = other
+     add_cui                       = yes
+     virtual_server                = eduroam
 }
 
 # Access Points
@@ -57,7 +50,7 @@ client radius.ucu.ac.ug {
     netmask                         = {{ client.netmask|default(netmask) }}
     secret                          = {{ client.secret }}
     require_message_authenticator   = yes
-    nastype                         = {{ client.nastype|default(nastype) }}
+    #nastype                        = {{ client.nastype|default(nastype) }}
     virtual_server                  = {{ client.virtual_server|default(virtual_server) }}
   }
 

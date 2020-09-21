@@ -1,7 +1,3 @@
-proxy server {
-        default_fallback        = no
-}
-
 home_server localhost {
         type = auth
         ipaddr = 127.0.0.1
@@ -51,15 +47,23 @@ home_server_pool EDUROAM {
         home_server    = radius.ucu.ac.ug
 }
 
-{% for client in clients %}
-
-realm {{ realms }} {
-	nostrip
+realm NULL {
+        nostrip
 }
 
-{% endfor %}
+realm {{ realms }} {
+       #nostrip
+}
 
-realm "~.+$" {
-        pool                    = EDUROAM
+realm "~.+\\.example\\.ac\\.ug$" {
+}
+# blackhole routing - EAP-SIM/MNOs
+realm "~\\.3gppnetwork\\.org$" {
+    nostrip
+}
+
+
+realm DEFAULT {
+        pool          = EDUROAM
         nostrip
 }

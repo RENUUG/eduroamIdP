@@ -28,12 +28,15 @@ server eduroam {
                         Operator-Name := "1{{ realms[0] }}"
                         # the literal number "1" above is an important prefix! Do not change it!
                 }
+                cui
                 # if you want detailed logging
                 auth_log
                 suffix
+                eap
         }
 
         authenticate {
+                eap
         }
 
         preacct {
@@ -46,16 +49,21 @@ server eduroam {
         post-auth {
                 # if you want detailed logging
                 reply_log
+                cui
+                cui_filter
+                cui_log
                 f_ticks
                 Post-Auth-Type REJECT {
                         reply_log
                         f_ticks
+                        eduroam_log
                 }
         }
 
         pre-proxy {
                 # if you want detailed logging
                 pre_proxy_log
+                cui
                 if("%{Packet-Type}" != "Accounting-Request") {
                         attr_filter.pre-proxy
                 }
@@ -65,5 +73,5 @@ server eduroam {
                 # if you want detailed logging
                 post_proxy_log
                 attr_filter.post-proxy
-        }
+     }
 }

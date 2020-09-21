@@ -1,60 +1,67 @@
+###   Configure.yml is organised per directory
+##  Beginning with {{radius.config_path}}
+
+# radius.conf
 - name: Reduce Reject Delay
   replace:
     dest: "{{radius.config_path}}/radiusd.conf"
     regexp: 'reject_delay = 1'
     replace: 'reject_delay = 0'
   notify: restart freeradius
-
-
-# This was no longer needed as dictionary( for freeradius 3.0.16)
-# already had all elements to be added
-# - name: Copy dictionary with Operator-Name
-#   copy:
-#     src: files/dictionary
-#     dest: "{{ radius.config_path }}/dictionary"
-#     backup: yes
-#   notify: restart freeradius
-
-# - name: Edit dictionary to add Operator Name
-#   lineinfile: dest=""{{ radius.config_path }}/dictionary" regexp="^Operator-Name"  line="ATTRIBUTE  Operator-Name     126  string"
-
-- name: Create the certificates using the make command
-  make:
-    chdir: "{{ radius.config_path }}/certs"
-  notify: restart freeradius
-
-- name: checking for Operator Name in dictionary
-  shell: cat {{ radius.config_path }}/dictionary | grep Operator-Name | wc -l
-  register: test_grep
-
-- debug: msg="{{test_grep.stdout}}"
-
-- name: adding Operator Name in dictionary
-  lineinfile: dest="{{ radius.config_path }}/dictionary" line="ATTRIBUTE  Operator-Name     126  string"
-  when: test_grep.stdout == "0"
+  tags:
+    - config
 
 # Fitted it for Ugandan radius proxies for both client and proxy.conf
+# clients.conf
 - name: Copy clients configuration
   template:
     src: clients.conf.j2
     dest: "{{ radius.config_path }}/clients.conf"
     backup: yes
-  tags: clients
+  tags:
+    - clients
+    - config
   notify: restart freeradius
 
+# proxy.conf
 - name: Copy proxy configuration
   template:
     src: proxy.conf.j2
     dest: "{{radius.config_path}}/proxy.conf"
     backup: yes
   notify: restart freeradius
+  tags:
+    - config
 
+##  Next we go to {{radius.config_path}}/certs
+- name: Create the certificates using the make command
+  make:
+    chdir: "{{ radius.config_path }}/certs"
+  notify: restart freeradius
+
+
+##  Next we go to {{radius.config_path}}/mods-available and
+##  and {{radius.config_path}}/mods-enabled,
+##  Since the two will symlink
+#  cui
+- name: Enable cui module
+  file:
+    src: "{{radius.config_path}}/mods-available/cui"
+    dest: "{{radius.config_path}}/mods-enabled/cui"
+    state: link
+  notify: restart freeradius
+  tags:
+    - config
+
+#  eap
 - name: Copy eap configuration
   template:
-    src: eap.j2
+    src: mods_eap.j2
     dest: "{{radius.config_path}}/mods-available/eap"
     backup: yes
   notify: restart freeradius
+  tags:
+    - config
 
 - name: Enable EAP module if enabled
   file:
@@ -62,13 +69,37 @@
     dest: "{{radius.config_path}}/mods-enabled/eap"
     state: link
   notify: restart freeradius
+  tags:
+    - config
 
+#  eduroam_cui_log
+- name: Copy eduroam_cui_log module
+  copy:
+    src: mods-eduroam_cui_log
+    dest: "{{radius.config_path}}/mods-available/eduroam_cui_log"
+    #backup: yes
+  notify: restart freeradius
+  tags:
+    - config
+
+- name: Enable eduroam_cui_log module
+  file:
+    src: "{{radius.config_path}}/mods-available/eduroam_cui_log"
+    dest: "{{radius.config_path}}/mods-enabled/eduroam_cui_log"
+    state: link
+  notify: restart freeradius
+  tags:
+    - config
+
+#  f_ticks
 - name: Copy f_ticks module configuration
   copy:
     src: f_ticks
     dest: "{{radius.config_path}}/mods-available/f_ticks"
     #backup: yes
   notify: restart freeradius
+  tags:
+    - config
 
 - name: Enable f_ticks module
   file:
@@ -76,6 +107,8 @@
     dest: "{{radius.config_path}}/mods-enabled/f_ticks"
     state: link
   notify: restart freeradius
+  tags:
+    - config
 
 #For AD, another role is to be set up in later updates
 - name: Copy LDAP module if enabled
@@ -85,7 +118,9 @@
     backup: yes
   notify: restart freeradius
   when: ldap.enabled == True
-  tags: ldaps
+  tags:
+    - config
+    - ldaps
 
 - name: Enable LDAP module if enabled
   file:
@@ -94,6 +129,9 @@
     state: link
   notify: restart freeradius
   when: ldap.enabled == True
+  tags:
+    - config
+    - ldaps
 
 - name: Add test user if enabled
   template:
@@ -102,11 +140,28 @@
   notify: restart freeradius
   when: file.enabled == True
 
+##  Next we go to {{radius.config_path}}/mods-config
+- name: Copy attr_filter/pre-proxy file
+  copy:
+    src: attr_filter.pre-proxy
+    dest: "{{radius.config_path}}/mods-config/attr_filter/pre-proxy"
+    #backup: yes
+  notify: restart freeradius
+  tags:
+    - config
+
+##  Next we go to {{radius.config_path}}/sites-available and
+##  and {{radius.config_path}}/sites-enabled,
+##  Since the two will symlink
+#  eduroam
 - name: Copy sites/eduroam
   template:
-    src: site-eduroam.j2
+    src: vsite-eduroam.j2
     dest: "{{radius.config_path}}/sites-available/eduroam"
   notify: restart freeradius
+  tags:
+    - config
+    - ldaps
 
 - name: Enable sites/eduroam
   file:
@@ -114,12 +169,19 @@
     dest: "{{radius.config_path}}/sites-enabled/eduroam"
     state: link
   notify: restart freeradius
+  tags:
+    - config
+    - ldaps
 
+#  eduroam-inner-tunnel
 - name: Copy sites/eduroam-inner-tunnel
   template:
-    src: sites_eduroam-inner-tunnel.j2
+    src: vsite_eduroam-inner-tunnel.j2
     dest: "{{radius.config_path}}/sites-available/eduroam-inner-tunnel"
   notify: restart freeradius
+  tags:
+    - config
+    - ldaps
 
 - name: Enable sites/eduroam-inner-tunnel
   file:
@@ -127,7 +189,11 @@
     dest: "{{radius.config_path}}/sites-enabled/eduroam-inner-tunnel"
     state: link
   notify: restart freeradius
+  tags:
+    - config
+    - ldaps
 
+#  Remove default virtual sites
 - name: Remove default RADIUS sites
   file:
     path: "{{radius.config_path}}/sites-enabled/{{ item }}"
@@ -135,10 +201,38 @@
   with_items:
     - default
     - inner-tunnel
+  tags:
+    - config
 
+##  Next we go to {{radius.config_path}}/policy.d
+#  policy.d/cui
+- name: Edit policy.d cui file
+  replace:
+    dest: "{{radius.config_path}}/policy.d/cui"
+    regexp: 'cui_require_operator_name = "no"'
+    replace: 'cui_require_operator_name = "yes"'
+  notify: restart freeradius
+  tags:
+    - config
+
+# filter
+- name: Copy policy.d/filter module
+  copy:
+    src: policy.d_filter
+    dest: "{{radius.config_path}}/policy.d/filter"
+    #backup: yes
+  notify: restart freeradius
+  tags:
+    - config
+
+###    Changing file ownership to ensure all files are owned by FreeRADIUS user
 - name: Change file ownership, group for FreeRADIUS
   file:
     path: "{{radius.config_path}}"
     owner: freerad
     group: freerad
     recurse: yes
+  tags:
+    - config
+    - clients
+    - ldaps

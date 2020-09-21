@@ -1,42 +1,38 @@
 server eduroam-inner-tunnel {
 
-listen {
-       ipaddr = 127.0.0.1
-       port = 18150
-       type = auth
-}
-
 authorize {
-
         auth_log
-        eap {
-                ok = return
-        }
+        eap
         files
         mschap
         pap
-        suffix
         {% if ldap.enabled == True %}ldap{% endif %}
 }
 
 authenticate {
-
-        eap
-
         Auth-Type PAP {
-               pap
+                pap
         }
-
-
         Auth-Type MS-CHAP {
-               mschap
+                mschap
         }
-
+        eap
         {% if ldap.enabled == True %}
         ldap
         Auth-Type LDAP {
                ldap
         }
         {% endif %}
+}
+
+post-auth {
+        reply_log
+        cui_inner_log
+        cui-inner
+        Post-Auth-Type REJECT {
+                reply_log
+		cui_inner_log
+        }
+
 }
 }
