@@ -24,8 +24,13 @@ Either way, Good Luck
 
 - Install ansible and all its dependencies
 
-        :~/eduroamIdP$ chmod +x ./install-ansible.sh
-        :~/eduroamIdP$ sudo ./install-ansible.sh
+        :~/eduroamIdP$ chmod +x ./install-ansible-ubuntu.sh
+        :~/eduroamIdP$ sudo ./install-ansible-ubuntu.sh
+
+- CentOS users can use this instead all its dependencies
+
+        :~/eduroamIdP$ chmod +x ./install-ansible-centos.sh
+        :~/eduroamIdP$ sudo ./install-ansible-centos.sh
 
 - Copy the inventory template
 

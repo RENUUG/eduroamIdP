@@ -1,0 +1,16 @@
+### Federation/National Level Roaming Operators ###
+
+flrs:
+  -
+    name: eduroam-proxy.renu.ac.ug
+    shortname: flr1
+    ip4: 196.43.185.12
+    ipv6_enabled: False
+    ip6:
+
+  ## Second instance for Redundancy
+  -
+    name: radius.ucu.ac.ug
+    shortname: flr-2
+    ip4: 196.43.140.135
+    ipv6_enabled: False

@@ -1,10 +1,4 @@
-- name: Make sure Python2 is available as Python3 is not yet properly supported by Ansible
-  hosts: idp
-  become: True
-  gather_facts: False
-  tasks:
-    - raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-
+---
 - name: Gather OS specific variables
   hosts: idp
   become: True
@@ -24,6 +18,7 @@
   vars_files:
     - group_vars/secrets.yml
     - group_vars/clients.yml
+    - group_vars/radius_flr.yml
     - group_vars/template
   roles:
     - freeradius
