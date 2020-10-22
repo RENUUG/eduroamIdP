@@ -5,7 +5,11 @@ clients:
   - name: MyAP_network
     ip4: 137.63.128.0
     netmask: 24
+    port: 1812  # In the event that you use a different port for radius
     secret: MySecret
+    ipv6_enabled: False # Change to True in case u have v6
+    ip6:
+    netmask6:
 
 
 #   # Additional Access Points or Access Point Networks can be added here

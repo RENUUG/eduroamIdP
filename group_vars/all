@@ -2,7 +2,8 @@
 
 default_eap_type: peap
 
-netmask: 24
+def_rad_port: 1812
+netmask: 32
 nastype: other
 virtual_server: eduroam
 inner_tunnel: eduroam-inner-tunnel

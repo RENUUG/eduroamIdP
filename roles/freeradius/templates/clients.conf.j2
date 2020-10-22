@@ -19,27 +19,34 @@ client localhost {
 ##
 ## These are the eduroam FLR servers for your country
 ##
-client eduroam.renu.ac.ug {
-     ipaddr                        = 196.43.185.12
+{% for flr in flrs %}
+client {{ flr.name }} {
+     ipaddr                        = {{ flr.ip4 }}
      netmask                       = 32
      secret                        = {{ flr_secret }}
      require_message_authenticator = yes
-     shortname                     = eduroam.renu.ac.ug
+     shortname                     = {{ flr.shortname }}
      nas_type                      = other
      add_cui                       = yes
      virtual_server                = eduroam
 }
 
-client radius.ucu.ac.ug {
-     ipaddr                        = 196.43.140.135
-     netmask                       = 32
-     secret                        = {{ flr_secret }}
-     require_message_authenticator = yes
-     shortname                     = radius.ucu.ac.ug
-     nas_type                      = other
-     add_cui                       = yes
-     virtual_server                = eduroam
+{% if flr.ipv6_enabled == True %}
+## {{ flr.name }} IPv6
+client {{ flr.name }}-v6 {
+        ipaddr                        = {{ flr.ip6 }}
+        netmask                       = 32
+        secret                        = {{ flr_secret }}
+        require_message_authenticator = yes
+        shortname                     = {{ flr.shortname }}
+        nas_type                      = other
+        add_cui                       = yes
+        virtual_server                = eduroam
 }
+
+{% endif %}
+{% endfor %}
+
 
 # Access Points
 

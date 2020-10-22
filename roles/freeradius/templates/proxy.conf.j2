@@ -28,32 +28,42 @@ home_server localhost {
         }
 
 }
-
-home_server eduroam-proxy.renu.ac.ug {
+{% for flr in flrs %}
+## {{ flr.name }} IPv4
+home_server {{ flr.name }} {
         type           = auth+acct
-        ipaddr         = 196.43.185.12
-        port           = 1812
+        ipaddr         = {{ flr.ip4 }}
+        port           = {{flr.port | default(def_rad_port) }}
         secret         = {{ flr_secret }}
         status_check   = status-server
 }
 
-home_server radius.ucu.ac.ug {
+{% if flr.ipv6_enabled == True %}
+## {{ flr.name }} IPv6
+home_server {{ flr.name }}-v6 {
         type           = auth+acct
-        ipaddr         = 196.43.140.135
-        port           = 1812
+        ipaddr         = {{ flr.ip6 }}
+        port           = {{flr.port | default(def_rad_port) }}
         secret         = {{ flr_secret }}
         status_check   = status-server
 }
+{% endif %}
+
+{% endfor %}
+
 
 home_server_pool EDUROAM {
         type           = fail-over
-        home_server    = eduroam-proxy.renu.ac.ug
-        home_server    = radius.ucu.ac.ug
+        {% for flr in flrs %}
+        home_server    = {{ flr.name }}
+        {% if flr.ipv6_enabled == True %}
+        home_server    = {{ flr.name }}-v6
+        {% endif %}{% endfor %}
 }
 
-{% for client in clients %}
+{% for realm in realms %}
 
-realm {{ realms }} {
+realm {{ realm }} {
 	nostrip
 }
 

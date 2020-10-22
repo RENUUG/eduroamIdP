@@ -1,4 +1,7 @@
-realms: example.ac.ug
+## This file contains information about you
+realms:
+  - test.renu.ac.ug
+  - vtest.renu.ac.ug
 
 organisation: Example University
 city: Kampala
@@ -42,7 +45,9 @@ file:
 
 
 
-### Additional Roles ###
+        ########################
+        ### Additional Roles ###
+        ########################
 
 # Role for testing Radius IdP functionality
 play_eapol: False
