@@ -61,10 +61,14 @@ home_server_pool EDUROAM {
         {% endif %}{% endfor %}
 }
 
+realm NULL {
+	nostrip
+}
+
 {% for realm in realms %}
 
 realm {{ realm }} {
-	nostrip
+	#nostrip
 }
 
 {% endfor %}
