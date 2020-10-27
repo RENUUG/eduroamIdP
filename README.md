@@ -1,10 +1,10 @@
 # RENUansible_eduroam
-This is a copy of Chris Rohrer's hard work in creating ansible scripts for installing freeradius eduroam customized to fit RENU NREN member institutions.
-I do not own this content and I pay credit to the efforts done by Ubuntunet team to have the original scripts available. You can find the original repository at https://github.com/ubuntunet
+This was originally a copy of Chris Rohrer's hard work in creating ansible scripts for installing freeradius eduroam customized to fit RENU NREN member institutions. But with provision to fit any other NREN setting
+We(RENU Systems team) thank the Ubuntunet team for the initial steps they took to have the original scripts available. You can find the original repository at https://github.com/ubuntunet.
 
-Again, this repository was created to customise the original scripts to fit in with the Ugandan NREN as a separate project to help easily automate eduroam set up in Uganda.
+Again, this repository was created to customise the original scripts to fit in with the Ugandan NREN as a separate project to help easily automate eduroam set up in Uganda. It has almost meant to fully update the scripts to the latest most operational
 
-If you have read and understood the above, either continue to README.mdown or you can visit the link below to access the original
+If you have read and understood the above, either continue down or you can visit the link below to access the original
 
 https://github.com/ubuntunet/eduroam_radius
 
@@ -59,6 +59,10 @@ Either way, Good Luck
 - Edit eduroam_idp.yml and add replace <tld_institution> with your actual inventory file name on line 27
 
         group_vars/<tld_institution>
+
+- For non-Ugandan institutions, kindly edit the radius_flr.yml file to your NREN FLR server.
+
+                :~/eduroamIdP$ group_vars/radius_flr.yml
 
 - Run the playbook and make sure it finishes without error messages. Whenever you change something in the playbook, just replay this command.
 

@@ -1,4 +1,9 @@
 ## This file contains information about you
+
+#   # The realms are the domains the RADIUS server is responsible for.
+#   # Below is an example, but in most cases an institution has one domain
+#   # Two domains(RENU subdomains) were used for proof of concept in case you have more than one domain
+#   # Otherwise you only need to have only one domain and delete the line having the second domain
 realms:
   - test.renu.ac.ug
   - vtest.renu.ac.ug
@@ -10,6 +15,7 @@ country_code: UG
 
 ### User Stores ###
 # LDAP
+#   # Example below for domain: example.ac.ug
 ldap:
   enabled: False
   server: ldap.example.ac.ug
@@ -20,6 +26,7 @@ ldap:
   # user_password_type: Cleartext-Password
   user_password_type: Password-With-Header
 
+#   # Windows AD and all below it havent been automated yet but plans to do so are underway
 # Windows Active Directory
 #Windows authentication to be add
 win_auth:

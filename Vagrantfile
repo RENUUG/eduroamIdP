@@ -12,7 +12,7 @@ config.vm.box = "ubuntu/bionic64"
 #    #Check 'vagrantbackup' for other options
 #    #If for some reason you want to create/recreate the instance with the same IP, uncomment and edit the IP section
 #    #This has to be an IP in the range of your host's connected IPs
-config.vm.network "public_network"    #, ip: "196.43.159.139"
+config.vm.network "public_network"    #, ip: "196.43.159.108"
 #    #When the VM starts, do not forget to delete the default route going through the NAT interface
 
 #    #Hostname assigned to the vm after creation.

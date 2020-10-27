@@ -34,7 +34,7 @@
   	#  Unless overridden in another section, the dn from which all
   	#  searches will start from.
   	#base_dn = 'dc=example,dc=org'
-    basedn = "{{ ldap.base_dn }}"
+    base_dn = "{{ ldap.base_dn }}"
 
   	#
   	#  SASL parameters to use for admin binds
@@ -115,11 +115,12 @@
   	#  attribute ref.
   	update {
   		control:Password-With-Header	+= 'userPassword'
-  #		control:NT-Password		:= 'ntPassword'
-  #		reply:Reply-Message		:= 'radiusReplyMessage'
-  #		reply:Tunnel-Type		:= 'radiusTunnelType'
-  #		reply:Tunnel-Medium-Type	:= 'radiusTunnelMediumType'
-  #		reply:Tunnel-Private-Group-ID	:= 'radiusTunnelPrivategroupId'
+  		control:NT-Password		:= 'ipaNTHash'
+  		control:NT-Password		:= 'ntPassword'
+  		reply:Reply-Message		:= 'radiusReplyMessage'
+  		reply:Tunnel-Type		:= 'radiusTunnelType'
+  		reply:Tunnel-Medium-Type	:= 'radiusTunnelMediumType'
+  		reply:Tunnel-Private-Group-ID	:= 'radiusTunnelPrivategroupId'
 
   		#  Where only a list is specified as the RADIUS attribute,
   		#  the value of the LDAP attribute is parsed as a valuepair
@@ -163,7 +164,7 @@
   		#  "samaccountname=" instead of "uid="
   		#
   		#filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
-      filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+      filter = {% raw %}"(uid=%{%{Stripped-User-Name}:-%{User-Name}})"{% endraw %}
 
   		#  SASL parameters to use for user binds
   		#
@@ -252,7 +253,7 @@
   		#  Filter to find group objects a user is a member of.
   		#  That is, group objects with attributes that
   		#  identify members (the inverse of membership_attribute).
-  #		membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+  #		membership_filter = {% raw %}"(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"{% endraw %}
 
   		#  The attribute in user objects which contain the names
   		#  or DNs of groups a user is a member of.
@@ -315,7 +316,7 @@
   	#
   	client {
   		#   Where to start searching in the tree for clients
-  		base_dn = "${..base_dn}"
+  		base_dn = {% raw %}"${..base_dn}"{% endraw %}
 
   		#
   		#  Filter to match client objects
@@ -388,7 +389,7 @@
   	#  attribute, all instances of the attribute will be removed and
   	#  replaced with a single attribute.
   	accounting {
-  		reference = "%{tolower:type.%{Acct-Status-Type}}"
+  		reference = {% raw %}"%{tolower:type.%{Acct-Status-Type}}"{% endraw %}
 
   		type {
   			start {

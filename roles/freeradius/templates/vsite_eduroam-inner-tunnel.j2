@@ -2,27 +2,38 @@ server eduroam-inner-tunnel {
 
 authorize {
         auth_log
-        eap
+        eap {
+            ok = return
+        }
         files
+        filter_username
+        suffix
+
+{% if ldap.enabled == True %}
+        ldap
+        if ((ok || updated) && User-Password) {
+              update {
+                  control:Auth-Type := ldap
+              }
+           }
+{% endif %}
         mschap
         pap
-        {% if ldap.enabled == True %}ldap{% endif %}
 }
 
 authenticate {
+        eap
         Auth-Type PAP {
                 pap
         }
+
+        Auth-Type LDAP {
+                ldap
+        }
+
         Auth-Type MS-CHAP {
                 mschap
         }
-        eap
-        {% if ldap.enabled == True %}
-        ldap
-        Auth-Type LDAP {
-               ldap
-        }
-        {% endif %}
 }
 
 post-auth {
@@ -31,7 +42,7 @@ post-auth {
         cui-inner
         Post-Auth-Type REJECT {
                 reply_log
-		cui_inner_log
+		            cui_inner_log
         }
 
 }

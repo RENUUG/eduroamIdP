@@ -21,8 +21,10 @@ ansible_user=ubuntu
 #   # Only uncomment this if you are using private keys in a different location
 #private_key_file=/path/to/private_key_file
 
+#   # Below comment out till further use for it is found
+#   # Kindly ignore everything below this
 #   # <tld_institution> like in all places can be replaced with a name you prefer
 #   # This can be something like renu.ac.ug, test.renu.ac.ug, metro.renu.ac.ug
 #   # To maintain consistency, <tld_institution> should be replaced with the same value in all places
-[<tld_institution>:children]
-idp
+#[<tld_institution>:children]
+#idp

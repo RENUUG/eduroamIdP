@@ -19,7 +19,8 @@
     - group_vars/secrets.yml
     - group_vars/clients.yml
     - group_vars/radius_flr.yml
-    - group_vars/vtest.renu.ac.ug
+#       #IMPORTANT!!!: Edit below to group_vars/<name used in part 1>
+    - group_vars/test.renu.ac.ug
   roles:
     - freeradius
     - { role: eapol_test, when: play_eapol == True }

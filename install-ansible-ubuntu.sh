@@ -10,4 +10,5 @@ apt install -y ansible cowsay sshpass build-essential python3-dev
 apt upgrade -y
 ufw allow radius ssh
 chmod 600 ./ansible.cfg
+ansible --version
 echo -e "\n      *****Ansible Installation*****\n Result:============================================\n\n***Ansible has been successfully installed to this server***"

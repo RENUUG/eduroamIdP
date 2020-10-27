@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/ubuntunet/eduroam_idp.png?branch=master)](https://travis-ci.org/ubuntunet/eduroam_idp)
 
 # Ansible Playbook for an eduroam IdP/Radius server
 
@@ -6,41 +5,57 @@
 
 - Clone the repository from Github
 
-        git clone https://github.com/ubuntunet/eduroam_radius.git
+        :~$ git clone https://github.com/RENUUG/eduroamIdP.git ~/eduroamIdP
 
 - Change into the newly created directory
 
-        cd eduroam_radius
+        :~$ cd eduroamIdP
+
+- Install ansible and all its dependencies
+
+        :~/eduroamIdP$ chmod +x ./install-ansible-ubuntu.sh
+        :~/eduroamIdP$ sudo ./install-ansible-ubuntu.sh
+
+- CentOS users can use this instead all its dependencies
+
+        :~/eduroamIdP$ chmod +x ./install-ansible-centos.sh
+        :~/eduroamIdP$ sudo ./install-ansible-centos.sh
 
 - Copy the inventory template
 
-        cp inventories/template inventories/<tld_institution>
-
+        :~/eduroamIdP$ cp inventories/template inventories/<tld_institution>
 
 - Open your new inventory and replace
 
-  - FQDN or IP with the actual URL/IP of your server
+  - FQDN or IP with the actual URL/IP of your server
   - <tld_institution> with your actual inventory file name
+  - Examples of <tld_institution> would be; test.renu.ac.ug
 
 - Copy the group_vars template
 
-        cp group_vars/template group_vars/<tld_institution>
+        :~/eduroamIdP$ cp group_vars/template group_vars/<tld_institution>
 
 - Adopt the variables in group_vars/<tld_institution> to your liking
 
-- Edit eduroam_idp.yml and replace group_vars/template with group_vars/<tld_institution>
-
 - Copy the clients template, where you'll be adding the information about the clients that are connecting to your Radius server
 
-        cp group_vars/clients.yml.example group_vars/clients.yml
+        :~/eduroamIdP$ cp group_vars/clients.yml.example group_vars/clients.yml
 
 - Create the secret.yml file that contains your sensitive information. Add your credentials.
 
-        cp group_vars/secrets.yml.example group_vars/secrets.yml
+        :~/eduroamIdP$ cp group_vars/secrets.yml.example group_vars/secrets.yml
+
+- Edit eduroam_idp.yml and add replace <tld_institution> with your actual inventory file name on line 27
+
+        group_vars/<tld_institution>
+
+- For non-Ugandan institutions, kindly edit the radius_flr.yml file to your NREN FLR server.
+
+                :~/eduroamIdP$ group_vars/radius_flr.yml
 
 - Run the playbook and make sure it finishes without error messages. Whenever you change something in the playbook, just replay this command.
 
-        ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml
+        :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml
 
 ## Adding a new client/access point (AP)
 
@@ -49,7 +64,7 @@
 - Change the name, IP address and shared secret
 - Re-run the playbook with the clients tag, which will only copy the clients.conf file making for a faster deployment
 
-        ansible-playbook -i inventories/<tld_institution> --tags "clients" eduroam_idp.yml
+        :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> --tags "clients" eduroam_idp.yml
 
 
 ## How do I check if it works?
@@ -69,10 +84,10 @@ and check for an "Access-Accept" in the response.
   - Log into your machine
   - Stop the freeradius daemon
 
-            sudo service freeradius stop
+            $ sudo service freeradius stop
   - Start it manually in debug mode
 
-            sudo freeradius -X
+            $ sudo freeradius -X
 
 ### Using eapol_test
 
@@ -84,12 +99,12 @@ See also http://deployingradius.com/scripts/eapol_test
 
 - Re-run playbook
 
-          ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml          
+          :~/eduroamIdP$ ansible-playbook -i inventories/<tld_institution> eduroam_idp.yml          
 
 - Log into the server
 - Have a look at the configuration test file in your home folder
 
-          vi ~/peap-mschapv2.conf
+          vi peap-mschapv2.conf
 
 - Run the test
 

@@ -113,7 +113,7 @@
 #For AD, another role is to be set up in later updates
 - name: Copy LDAP module if enabled
   template:
-    src: ldap-module.j2
+    src: ldap-module2.j2
     dest: "{{radius.config_path}}/mods-available/ldap"
     backup: yes
   notify: restart freeradius

@@ -1,0 +1,144 @@
+#   # Due to templating issues, extra documentation was removed to reduce on the number of lines
+#   # Backup option was set, therefore you can check through the mods-available folder for the initial ldap file
+
+  ldap {
+    server = "{{ ldap.server }}"
+    identity = "{{ ldap_identity }}"
+    password = "{{ ldap_password }}"
+    base_dn = "{{ ldap.base_dn }}"
+
+  	sasl {
+  	}
+
+    update {
+  		control:Password-With-Header	+= 'userPassword'
+  		control:NT-Password		:= 'ipaNTHash'
+  		control:NT-Password		:= 'ntPassword'
+  		reply:Reply-Message		:= 'radiusReplyMessage'
+  		reply:Tunnel-Type		:= 'radiusTunnelType'
+  		reply:Tunnel-Medium-Type	:= 'radiusTunnelMediumType'
+  		reply:Tunnel-Private-Group-ID	:= 'radiusTunnelPrivategroupId'
+
+  		#  Where only a list is specified as the RADIUS attribute,
+  		#  the value of the LDAP attribute is parsed as a valuepair
+  		#  in the same format as the 'valuepair_attribute' (above).
+  		control:			+= 'radiusControlAttribute'
+  		request:			+= 'radiusRequestAttribute'
+  		reply:				+= 'radiusReplyAttribute'
+  	}
+
+  	user {
+  		base_dn = "${..base_dn}"
+      filter = {% raw %}"(uid=%{%{Stripped-User-Name}:-%{User-Name}})"{% endraw %}
+  	}
+
+  	group {
+  		base_dn = "${..base_dn}"
+  		filter = '(objectClass=posixGroup)'
+  		membership_attribute = 'memberOf'
+  	}
+
+  	profile {
+  	}
+
+  	client {
+  		base_dn = "${..base_dn}"
+  		filter = '(objectClass=radiusClient)'
+  		template {
+  		}
+  		attribute {
+  			ipaddr				= 'radiusClientIdentifier'
+  			secret				= 'radiusClientSecret'
+  		}
+  	}
+
+  	accounting {
+  		reference = "%{tolower:type.%{Acct-Status-Type}}"
+
+  		type {
+  			start {
+  				update {
+  					description := "Online at %S"
+  				}
+  			}
+
+  			interim-update {
+  				update {
+  					description := "Last seen at %S"
+  				}
+  			}
+
+  			stop {
+  				update {
+  					description := "Offline at %S"
+  				}
+  			}
+  		}
+  	}
+
+  	post-auth {
+  		update {
+  			description := "Authenticated at %S"
+  		}
+  	}
+
+  	options {
+  		chase_referrals = yes
+  		rebind = yes
+  		res_timeout = 10
+  		srv_timelimit = 3
+  		net_timeout = 1
+
+  		#  LDAP_OPT_X_KEEPALIVE_IDLE
+  		idle = 60
+
+  		#  LDAP_OPT_X_KEEPALIVE_PROBES
+  		probes = 3
+
+  		#  LDAP_OPT_X_KEEPALIVE_INTERVAL
+  		interval = 3
+
+  		ldap_debug = 0x0028
+  	}
+
+  	tls {
+  		# Set this to 'yes' to use TLS encrypted connections
+  		# to the LDAP database by using the StartTLS extended
+  		# operation.
+  		#
+  		# The StartTLS operation is supposed to be
+  		# used with normal ldap connections instead of
+  		# using ldaps (port 636) connections
+  #		start_tls = yes
+      start_tls = no
+
+  	}
+  	pool {
+  		start = ${thread[pool].start_servers}
+
+  		min = ${thread[pool].min_spare_servers}
+  		max = ${thread[pool].max_servers}
+
+  		#  Spare connections to be left idle
+  		#
+  		#  NOTE: Idle connections WILL be closed if "idle_timeout"
+  		#  is set.  This should be less than or equal to "max" above.
+  		spare = ${thread[pool].max_spare_servers}
+
+  		#  Number of uses before the connection is closed
+  		uses = 0
+
+  		#  The number of seconds to wait after the server tries
+  		#  to open a connection, and fails.  During this time,
+  		#  no new connections will be opened.
+  		retry_delay = 30
+
+  		#  The lifetime (in seconds) of the connection
+  		lifetime = 0
+
+  		#  Idle timeout (in seconds).  A connection which is
+  		#  unused for this length of time will be closed.
+  		idle_timeout = 60
+  		#  or increase lifetime/idle_timeout.
+  	}
+  }

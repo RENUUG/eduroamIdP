@@ -1,22 +1,32 @@
+## This file contains information about you
 realms:
   - test.renu.ac.ug
 
-organisation: Test RENU Domain
+organisation: Example University
 city: Kampala
 country_code: UG
 
 
 ### User Stores ###
-
 # LDAP
 ldap:
-  enabled: False
+  enabled: True
   server: ipa1.test.renu.ac.ug
-  base_dn: ou=people,dc=test,dc=renu,dc=ac,dc=ug
+  #base_dn: cn=users,cn=accounts,dc=example,dc=ac,dc=ug   ##for freeIPA
+  base_dn: cn=users,cn=accounts,dc=test,dc=renu,dc=ac,dc=ug
   filter: "{% raw %}(uid=%{%{Stripped-User-Name}:-%{User-Name}}){% endraw %}"
   # How are user passwords saved in LDAP
   # user_password_type: Cleartext-Password
   user_password_type: Password-With-Header
+
+# Windows Active Directory
+#Windows authentication to be add
+win_auth:
+  enabled: False
+  type: Active Directory
+  server: ad.example.ac.ug
+  port: 636
+  user: Administrator
 
 # SQL Database (mysql or postgresql)
 sql:
@@ -33,34 +43,10 @@ file:
   test_user_name: roamer
 
 
-### Federation/National Level Roaming Operators ###
 
-flrs:
-  -
-    name: renu-flr-1
-    shortname: flr1
-    ip4: 196.43.185.12
-    ipv6_enabled: False
-    ip6:
-
-  ## Second instance for Redundancy
-  -
-    name: renu-flr-2
-    shortname: flr-2
-    ip4: 196.43.140.135
-    ipv6_enabled: False
-
-### Additional Roles ###
+        ########################
+        ### Additional Roles ###
+        ########################
 
 # Role for testing Radius IdP functionality
 play_eapol: False
-
-
-# Windows Active Directory
-#Windows authentication to be add
-win_auth:
-  enabled: False
-  type: Active Directory
-  server: ad.example.ac.ug
-  port: 636
-  user: Administrator

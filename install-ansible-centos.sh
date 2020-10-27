@@ -4,6 +4,7 @@ echo "This script is meant to install ansible and the necessary dependencies nee
 echo "Prefereably run this script from the directory it is located in for better results"
 sleep 20
 yum update || dnf update
-yum install -y ansible cowsay sshpass || dnf install -y ansible cowsay sshpass 
+yum install -y ansible cowsay sshpass || dnf install -y ansible cowsay sshpass
 chmod 600 ./ansible.cfg
+ansible --version
 echo -e "\n      *****Ansible Installation*****\n Result:============================================\n\n***Ansible has been successfully installed to this server***"
