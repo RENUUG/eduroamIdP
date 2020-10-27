@@ -58,11 +58,11 @@ Either way, Good Luck
 
 - Edit eduroam_idp.yml and add replace <tld_institution> with your actual inventory file name on line 27
 
-        group_vars/<tld_institution>
+        :~/eduroamIdP$ group_vars/<tld_institution>
 
 - For non-Ugandan institutions, kindly edit the radius_flr.yml file to your NREN FLR server.
 
-                :~/eduroamIdP$ group_vars/radius_flr.yml
+        :~/eduroamIdP$ group_vars/radius_flr.yml
 
 - Run the playbook and make sure it finishes without error messages. Whenever you change something in the playbook, just replay this command.
 
