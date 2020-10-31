@@ -27,9 +27,11 @@ authenticate {
                 pap
         }
 
+{% if ldap.enabled == True %}
         Auth-Type LDAP {
                 ldap
         }
+{% endif %}
 
         Auth-Type MS-CHAP {
                 mschap
