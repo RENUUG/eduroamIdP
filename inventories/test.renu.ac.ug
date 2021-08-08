@@ -19,4 +19,4 @@ ansible_user=vagrant
 
 
 #   # Only uncomment this if you are using private keys in a different location
-#private_key_file=/path/to/private_key_file
+#ansible_private_key_file=/path/to/private_key_file
